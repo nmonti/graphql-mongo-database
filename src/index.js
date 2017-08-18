@@ -8,7 +8,7 @@ import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 
 const PORT = 3002;
-const MONGO_URL = require('../mongoUri');
+const MONGO_URL = require('../config/mongoUri');
 
 // const because a function would be hoisted, and the imports would happen after
 const init = async () => {
