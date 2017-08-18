@@ -1,4 +1,5 @@
 import 'babel-polyfill'
+require('dotenv').config();
 
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -8,12 +9,11 @@ import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 
 const PORT = 3002;
-const MONGO_URL = require('../config/mongoUri');
 
 // const because a function would be hoisted, and the imports would happen after
 const init = async () => {
   try {
-    const db = await MongoClient.connect(MONGO_URL);
+    const db = await MongoClient.connect(process.env.LOCAL_MONGO_HOST);
 
     // db.collection('articles').drop();
     // db.collection('comments').drop();

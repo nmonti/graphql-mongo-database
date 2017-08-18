@@ -1,20 +1,26 @@
 ## Requirements
 
-* Mongodb. Once installed run `mongod --dbpath ./data/db` to set the database to this folder. Change if desired.
-* babel-cli. `npm install -g babel-cli` (this is useful regardless, but I'm probably gonna switch to webpack soon)
+* mongodb. Once installed run `mongod --dbpath ./data/db` to set the database to this folder. Change if desired. Be sure to change npm script if you do change the location.
+* Create a top level `.env` file to store usernames/passwords. Example:
+  ```bash
+  MONGO_HOST=mongodb://mlab.com:51153/blog
+  LOCAL_MONGO_HOST=mongodb://localhost:27017/blog
+  MONGO_USER=user
+  MONGO_PASS=password
+ ```
 
 ## Running
 
 * `npm i`
-* Start your mongo client, `mongod --dbpath <your/database>`
+* Start your mongo client, `npm run mongo`
 * `npm start`
-* Navigate to http://localhost:PORT/graphiql for a graphql interface that lets you play around. Or POST to http://localhost:PORT/graphql?query=QUERY
+* Navigate to http://localhost:PORT/graphiql for a graphql interface that lets you play around. Or GET http://localhost:PORT/graphql?query=QUERY
 
 ## Sample  queries
 
 ### Post article
 
-```
+```graphql
 mutation {
   postArticle(title: "Title", body: "Body") {
     _id
@@ -24,7 +30,7 @@ mutation {
 }
 ```
 **returns:**
-```
+```json
 {
   "data": {
     "postArticle": {
@@ -38,7 +44,7 @@ mutation {
 
 ### Get articles
 
-```
+```graphql
 {
   articles {
     _id
@@ -51,7 +57,7 @@ mutation {
 }
 ```
 **returns:**
-```
+```json
 {
   "data": {
     "articles": [
@@ -68,7 +74,7 @@ mutation {
 
 ### Post comment
 
-```
+```graphql
 mutation {
   postComment(articleId: "599657fd64612714daafdbc0", body: "Loser!") {
     _id
@@ -84,7 +90,7 @@ mutation {
 }
 ```
 **returns:**
-```
+```json
 {
   "data": {
     "postComment": {

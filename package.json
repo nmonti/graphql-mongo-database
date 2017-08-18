@@ -3,6 +3,7 @@
   "main": "index.js",
   "scripts": {
     "start": "babel -d dist/ src/ && node dist/index.js",
+    "mongo": "mongod --dbpath ./data/db",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,6 +21,7 @@
     "babel-plugin-transform-async-generator-functions": "^6.24.1",
     "body-parser": "^1.17.2",
     "cors": "^2.8.4",
+    "dotenv": "^4.0.0",
     "express": "^4.15.4",
     "graphql": "^0.10.5",
     "graphql-server-express": "^1.1.0",
