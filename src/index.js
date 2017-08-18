@@ -15,15 +15,20 @@ const init = async () => {
   try {
     const db = await MongoClient.connect(MONGO_URL);
 
-    //db.collection('articles').drop();
+    // db.collection('articles').drop();
+    // db.collection('comments').drop();
+    // db.collection('users').drop();
     const Articles = db.collection('articles');
     const Comments = db.collection('comments');
+    const Users = db.collection('users')
 
     const typeDefs = [`
       type Query {
         article(_id: ID): Article
         articles: [Article]
         comment(_id: ID): Comment
+        user(_id: ID): User
+        users: [User]
       }
 
       type Article {
@@ -31,18 +36,32 @@ const init = async () => {
         title: String!
         body: String!
         comments: [Comment]
+        author: User!
+        authorId: ID!
+        subheader: String
       }
 
       type Comment {
         _id: ID!
-        body: String
+        body: String!
         articleId: ID!
         article: Article
+        commenter: User!
+        likes: Int
+      }
+
+      type User {
+        _id: ID!
+        username: String!
+        password: String!
+        articles: [Article]
+        comments: [Comment]
       }
 
       type Mutation {
-        postArticle(title: String!, body: String!): Article
-        postComment(articleId: ID!, body: String!): Comment
+        createUser(username: String!, password: String!): User
+        postArticle(authorId: ID!, title: String!, body: String!, subheader: String): Article
+        postComment(commenterId: ID!, articleId: ID!, body: String!): Comment
       }
 
       schema {
@@ -61,6 +80,12 @@ const init = async () => {
         },
         comment: async (root, {_id}) => {
           return await Comments.findOne(ObjectId(_id));
+        },
+        user: async (root, {_id}) => {
+          return await Users.findOne(ObjectId(_id));
+        },
+        users: async (root, {_id}) => {
+          return await Users.find({}).toArray();
         }
       },
 
@@ -68,16 +93,26 @@ const init = async () => {
         comments: async ({_id}) => {
           _id = _id.toString();
           return await Comments.find({articleId: _id}).toArray();
+        },
+        author: async ({authorId}) => {
+          return await Users.findOne(ObjectId(authorId))
         }
       },
 
       Comment: {
         article: async ({articleId}) => {
           return await Articles.findOne(ObjectId(articleId));
+        },
+        commenter: async ({commenterId}) => {
+          return await Users.findOne(ObjectId(commenterId));
         }
       },
 
       Mutation: {
+        createUser: async (root, args) => {
+          const res = await Users.insert(args);
+          return await Users.findOne({_id: res.insertedIds[0]});
+        },
         postArticle: async (root, args) => {
           const res = await Articles.insert(args);
           return await Articles.findOne({_id: res.insertedIds[0]});
@@ -86,7 +121,7 @@ const init = async () => {
           const res = await Comments.insert(args);
           return await Comments.findOne({_id: res.insertedIds[0]});
         }
-      },
+      }
     };
 
     const schema = makeExecutableSchema({
