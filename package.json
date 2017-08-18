@@ -1,24 +1,9 @@
 {
   "name": "graphql-mongo-database",
-  "main": "index.js",
-  "scripts": {
-    "start": "babel -d dist/ src/ && node dist/index.js",
-    "mongo": "mongod --dbpath ./data/db",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/nmonti/graphql-mongo-database.git"
-  },
-  "author": "Nick Monti",
-  "license": "ISC",
-  "devDependencies": {
-    "babel-core": "^6.25.0",
-    "babel-eslint": "^7.2.3",
-    "babel-preset-env": "^1.6.0"
-  },
+  "version": "1.0.0",
+  "description": "* mongodb. Once installed run `mongod --dbpath ./data/db` to set the database to this folder. Change if desired. Be sure to change npm script if you do change the location. * Create a top level `.env` file to store usernames/passwords. Example: ```bash MONGO_HOST=mongodb://mlab.com:51153/blog LOCAL_MONGO_HOST=mongodb://localhost:27017/blog MONGO_USER=user MONGO_PASS=password ```",
+  "main": "webpack.config.js",
   "dependencies": {
-    "babel-plugin-transform-async-generator-functions": "^6.24.1",
     "body-parser": "^1.17.2",
     "cors": "^2.8.4",
     "dotenv": "^4.0.0",
@@ -27,5 +12,23 @@
     "graphql-server-express": "^1.1.0",
     "graphql-tools": "^1.1.0",
     "mongodb": "^2.2.31"
-  }
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-transform-async-generator-functions": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "webpack": "^3.5.5"
+  },
+  "scripts": {
+    "start": "babel -d dist/ src/ && node dist/index.js",
+    "mongo": "mongod --dbpath ./data/db",
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmonti/graphql-mongo-database.git"
+  },
+  "author": "nmonti"
 }
