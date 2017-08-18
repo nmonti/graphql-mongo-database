@@ -63,7 +63,7 @@ mutation {
     "articles": [
       {
         "_id": "599657fd64612714daafdbc0",
-        "title": "Title"
+        "title": "Title",
         "body": "Body",
         "comments": []
       }
@@ -95,8 +95,8 @@ mutation {
   "data": {
     "postComment": {
       "_id": "59965a4d64612714daafdbc2",
-      "body": "Loser!"
-      # Here I added article to show the comment was posted to it
+      "body": "Loser!",
+      "__comment__": "Here I added article to show the comment was posted to it",
       "article": {
         "title": "Title",
         "comments": [
