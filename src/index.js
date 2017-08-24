@@ -12,7 +12,7 @@ const PORT = 3002;
 // const because a function would be hoisted, and the imports would happen after
 const init = async () => {
   try {
-    const db = await MongoClient.connect(process.env.LOCAL_MONGO_HOST);
+    const db = await MongoClient.connect(process.env.MONGO_HOST);
 
     // db.collection('articles').drop();
     // db.collection('comments').drop();
