@@ -9,7 +9,7 @@ import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 import path from 'path';
 
-const PORT = 3002;
+const PORT = process.env.PORT || 3002;
 
 // const because a function would be hoisted, and the imports would happen after
 const init = async () => {
