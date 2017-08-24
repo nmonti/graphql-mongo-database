@@ -1,4 +1,4 @@
-~{
+{
   "name": "graphql-mongo-database",
   "version": "1.0.0",
   "description": "* mongodb. Once installed run `mongod --dbpath ./data/db` to set the database to this folder. Change if desired. Be sure to change npm script if you do change the location. * Create a top level `.env` file to store usernames/passwords. Example: ```bash MONGO_HOST=mongodb://mlab.com:51153/blog LOCAL_MONGO_HOST=mongodb://localhost:27017/blog MONGO_USER=user MONGO_PASS=password ```",
