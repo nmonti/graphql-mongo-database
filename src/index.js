@@ -1,11 +1,13 @@
 require('dotenv').config();
 
+import 'babel-polyfill';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
 import { MongoClient, ObjectId } from 'mongodb';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
+import path from 'path';
 
 const PORT = 3002;
 
@@ -129,8 +131,10 @@ const init = async () => {
     });
 
     const app = express()
+    const distPath = path.resolve(__dirname, '../dist');
 
     app.use(cors());
+    app.use(express.static(distPath, {maxAge: 86400000}));
     app.use('/graphql', bodyParser.json(), graphqlExpress({schema}));
     app.use('/graphiql', graphiqlExpress({
       endpointURL: '/graphql'
