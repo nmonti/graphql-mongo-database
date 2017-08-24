@@ -1,4 +1,3 @@
-import 'babel-polyfill'
 require('dotenv').config();
 
 import bodyParser from 'body-parser';

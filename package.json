@@ -4,9 +4,9 @@
   "description": "* mongodb. Once installed run `mongod --dbpath ./data/db` to set the database to this folder. Change if desired. Be sure to change npm script if you do change the location. * Create a top level `.env` file to store usernames/passwords. Example: ```bash MONGO_HOST=mongodb://mlab.com:51153/blog LOCAL_MONGO_HOST=mongodb://localhost:27017/blog MONGO_USER=user MONGO_PASS=password ```",
   "main": "webpack.config.js",
   "dependencies": {
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.2",
-    "babel-polyfill": "^6.26.0",
     "body-parser": "^1.17.2",
     "cors": "^2.8.4",
     "dotenv": "^4.0.0",
@@ -23,9 +23,8 @@
     "webpack": "^3.5.5"
   },
   "scripts": {
-    "start": "babel -d dist/ src/ && node dist/index.js",
+    "start": "babel-node src/index.js",
     "mongo": "mongod --dbpath ./data/db",
-    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
