@@ -8,6 +8,7 @@ import { MongoClient, ObjectId } from 'mongodb';
 import { graphqlExpress, graphiqlExpress } from 'graphql-server-express';
 import { makeExecutableSchema } from 'graphql-tools';
 import path from 'path';
+import r from 'rethinkdb';
 
 const PORT = process.env.PORT || 3002;
 
@@ -15,35 +16,38 @@ const PORT = process.env.PORT || 3002;
 const init = async () => {
   try {
     const db = await MongoClient.connect(process.env.MONGO_HOST);
-
+    const connection = await r.connect( {host: 'localhost', port: 28015});
     // db.collection('articles').drop();
     // db.collection('comments').drop();
     // db.collection('users').drop();
-    const Articles = db.collection('articles');
-    const Comments = db.collection('comments');
-    const Users = db.collection('users')
+    // await r.tableCreate('articles').run(connection)
+    // await r.tableCreate('users').run(connection)
+    // await r.tableCreate('comments').run(connection)
+    const Articles = r.table('articles');
+    const Comments = r.table('comments');
+    const Users = r.table('users');
 
     const typeDefs = [`
       type Query {
-        article(_id: ID): Article
+        article(id: ID): Article
         articles: [Article]
-        comment(_id: ID): Comment
-        user(_id: ID): User
+        comment(id: ID): Comment
+        user(id: ID): User
         users: [User]
       }
 
       type Article {
-        _id: ID!
+        id: ID!
         title: String!
         body: String!
         comments: [Comment]
-        author: User!
-        authorId: ID!
+        author: User
+        authorId: ID
         subheader: String
       }
 
       type Comment {
-        _id: ID!
+        id: ID!
         body: String!
         articleId: ID!
         article: Article
@@ -52,7 +56,7 @@ const init = async () => {
       }
 
       type User {
-        _id: ID!
+        id: ID!
         username: String!
         password: String!
         articles: [Article]
@@ -61,7 +65,7 @@ const init = async () => {
 
       type Mutation {
         createUser(username: String!, password: String!): User
-        postArticle(authorId: ID!, title: String!, body: String!, subheader: String): Article
+        postArticle(authorId: ID, title: String!, body: String!, subheader: String): Article
         postComment(commenterId: ID!, articleId: ID!, body: String!): Comment
       }
 
@@ -73,54 +77,72 @@ const init = async () => {
 
     const resolvers = {
       Query: {
-        article: async (root, {_id}) => {
-          return await Articles.findOne(ObjectId(_id));
+        article: async (root, {id}) => {
+          return await Articles.get(id).run(connection);
         },
-        articles: async () => {
-          return await Articles.find({}).toArray();
+        articles: async (root) => {
+          const articles = await r.table('articles').run(connection);
+          return await articles.toArray();
         },
-        comment: async (root, {_id}) => {
-          return await Comments.findOne(ObjectId(_id));
+        comment: async (root, {id}) => {
+          return await Comments.get(id).run(connection);
         },
-        user: async (root, {_id}) => {
-          return await Users.findOne(ObjectId(_id));
+        user: async (root, {id}) => {
+          return await Users.get(id).run(connection);
         },
-        users: async (root, {_id}) => {
-          return await Users.find({}).toArray();
+        users: async (root, {id}) => {
+          const users = await r.table('users').run(connection);
+          return await users.toArray();
         }
       },
 
       Article: {
-        comments: async ({_id}) => {
-          _id = _id.toString();
-          return await Comments.find({articleId: _id}).toArray();
+        comments: async ({id}) => {
+          const comments = await Comments.filter(
+                                        r.row("authorId")
+                                         .eq(id))
+                                         .run(connection);
+          return await comments.toArray();
         },
         author: async ({authorId}) => {
-          return await Users.findOne(ObjectId(authorId))
+          console.log(authorId)
+          return await Users.filter(
+                           r.row("id")
+                            .eq(authorId))
+                            .run(connection);
         }
       },
 
       Comment: {
         article: async ({articleId}) => {
-          return await Articles.findOne(ObjectId(articleId));
+          return await Articles.filter(
+                              r.row("id")
+                               .eq(articleId))
+                               .run(connection);
         },
         commenter: async ({commenterId}) => {
-          return await Users.findOne(ObjectId(commenterId));
+          return await Users.filter(
+                           r.row("id")
+                            .eq(commenterId))
+                            .run(connection);
         }
       },
 
       Mutation: {
         createUser: async (root, args) => {
-          const res = await Users.insert(args);
-          return await Users.findOne({_id: res.insertedIds[0]});
+          const res = await Users.insert(args, {returnChanges: true})
+                                 .run(connection);
+          return res.changes[0].new_val
         },
         postArticle: async (root, args) => {
-          const res = await Articles.insert(args);
-          return await Articles.findOne({_id: res.insertedIds[0]});
+          const res = await Articles.insert(args, {returnChanges: true})
+                                    .run(connection);
+          return res.changes[0].new_val
         },
         postComment: async (root, args) => {
-          const res = await Comments.insert(args);
-          return await Comments.findOne({_id: res.insertedIds[0]});
+          const res = await Comments.insert(args, {returnChanges: true})
+                                   .run(connection);
+          return res.changes[0].new_val;
         }
       }
     };

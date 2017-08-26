@@ -1,0 +1,27 @@
+2017-08-24T18:12:46.299854000 0.023712s notice: Recursively removing directory /Users/nick/projects/graphql-mongo-database/rethinkdb_data/tmp
+2017-08-24T18:12:46.301299000 0.025160s notice: Initializing directory /Users/nick/projects/graphql-mongo-database/rethinkdb_data
+2017-08-24T18:12:46.301502000 0.025359s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory '/Users/nick/projects/graphql-mongo-database/rethinkdb_data' did not already exist or is empty.)
+2017-08-24T18:12:46.301522000 0.025379s notice: Running rethinkdb 2.3.6 (CLANG 8.1.0 (clang-802.0.42))...
+2017-08-24T18:12:46.305539000 0.029397s notice: Running on Darwin 16.6.0 x86_64
+2017-08-24T18:12:46.305601000 0.029458s notice: Loading data from directory /Users/nick/projects/graphql-mongo-database/rethinkdb_data
+2017-08-24T18:12:46.360057000 0.083914s info: Automatically using cache size of 5013 MB
+2017-08-24T18:12:46.360495000 0.084352s notice: Listening for intracluster connections on port 29015
+2017-08-24T18:12:46.361879000 0.085736s notice: Listening for client driver connections on port 28015
+2017-08-24T18:12:46.361985000 0.085842s notice: Listening for administrative HTTP connections on port 8080
+2017-08-24T18:12:46.361987000 0.085844s notice: Listening on cluster addresses: 127.0.0.1, ::1
+2017-08-24T18:12:46.361990000 0.085847s notice: Listening on driver addresses: 127.0.0.1, ::1
+2017-08-24T18:12:46.361992000 0.085849s notice: Listening on http addresses: 127.0.0.1, ::1
+2017-08-24T18:12:46.361996000 0.085852s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2017-08-24T18:12:46.361999000 0.085856s notice: Server ready, "LIBP45P_17447DY_h5d" e66f3a69-304a-4a7b-b427-a04ce550837e
+2017-08-24T18:16:31.237031000 224.953510s info: Table e9cfade7-07ef-445b-a096-907f138dd9aa: Starting a new Raft election for term 1.
+2017-08-24T18:16:31.237358000 224.953836s info: Table e9cfade7-07ef-445b-a096-907f138dd9aa: Added replica on this server.
+2017-08-24T18:16:31.243790000 224.960269s info: Table e9cfade7-07ef-445b-a096-907f138dd9aa: This server is Raft leader for term 1. Latest log index is 0.
+2017-08-24T19:01:46.029186000 2939.669433s info: Table df8fe63a-a322-4ce1-b3ee-aecdefeaf547: Starting a new Raft election for term 1.
+2017-08-24T19:01:46.029298000 2939.669545s info: Table df8fe63a-a322-4ce1-b3ee-aecdefeaf547: Added replica on this server.
+2017-08-24T19:01:46.035835000 2939.676081s info: Table df8fe63a-a322-4ce1-b3ee-aecdefeaf547: This server is Raft leader for term 1. Latest log index is 0.
+2017-08-24T21:34:31.280528000 11146.138640s info: Table 3ede3392-dbde-4f6b-88c8-f0bdb93e0c88: Starting a new Raft election for term 1.
+2017-08-24T21:34:31.280707000 11146.138818s info: Table 3ede3392-dbde-4f6b-88c8-f0bdb93e0c88: Added replica on this server.
+2017-08-24T21:34:31.286089000 11146.144200s info: Table 3ede3392-dbde-4f6b-88c8-f0bdb93e0c88: This server is Raft leader for term 1. Latest log index is 0.
+2017-08-24T21:34:31.863377000 11146.721489s info: Table a55c0758-ae34-4cdf-8d22-72bd2d853312: Starting a new Raft election for term 1.
+2017-08-24T21:34:31.863499000 11146.721611s info: Table a55c0758-ae34-4cdf-8d22-72bd2d853312: Added replica on this server.
+2017-08-24T21:34:31.868499000 11146.726611s info: Table a55c0758-ae34-4cdf-8d22-72bd2d853312: This server is Raft leader for term 1. Latest log index is 0.
