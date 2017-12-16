@@ -12,27 +12,27 @@ import path from 'path';
 const PORT = process.env.PORT || 3002;
 
 // const because a function would be hoisted, and the imports would happen after
-const init = async () => {
+export const init = async () => {
   try {
     const db = await MongoClient.connect(process.env.MONGO_HOST);
 
-    // db.collection('articles').drop();
+    // db.collection('blogs').drop();
     // db.collection('comments').drop();
     // db.collection('users').drop();
-    const Articles = db.collection('articles');
+    const Blogs = db.collection('blogs');
     const Comments = db.collection('comments');
     const Users = db.collection('users')
 
     const typeDefs = [`
       type Query {
-        article(_id: ID): Article
-        articles: [Article]
+        blog(_id: ID): Blog
+        blogs: [Blog]
         comment(_id: ID): Comment
         user(_id: ID): User
         users: [User]
       }
 
-      type Article {
+      type Blog {
         _id: ID!
         title: String!
         body: String!
@@ -45,8 +45,8 @@ const init = async () => {
       type Comment {
         _id: ID!
         body: String!
-        articleId: ID!
-        article: Article
+        blogId: ID!
+        blog: Blog
         commenter: User!
         likes: Int
       }
@@ -55,14 +55,14 @@ const init = async () => {
         _id: ID!
         username: String!
         password: String!
-        articles: [Article]
+        blogs: [Blog]
         comments: [Comment]
       }
 
       type Mutation {
         createUser(username: String!, password: String!): User
-        postArticle(authorId: ID!, title: String!, body: String!, subheader: String): Article
-        postComment(commenterId: ID!, articleId: ID!, body: String!): Comment
+        postBlog(authorId: ID!, title: String!, body: String!, subheader: String): Blog
+        postComment(commenterId: ID!, blogId: ID!, body: String!): Comment
       }
 
       schema {
@@ -73,11 +73,11 @@ const init = async () => {
 
     const resolvers = {
       Query: {
-        article: async (root, {_id}) => {
-          return await Articles.findOne(ObjectId(_id));
+        blog: async (root, {_id}) => {
+          return await Blogs.findOne(ObjectId(_id));
         },
-        articles: async () => {
-          return await Articles.find({}).toArray();
+        blogs: async () => {
+          return await Blogs.find({}).toArray();
         },
         comment: async (root, {_id}) => {
           return await Comments.findOne(ObjectId(_id));
@@ -90,10 +90,10 @@ const init = async () => {
         }
       },
 
-      Article: {
+      Blog: {
         comments: async ({_id}) => {
           _id = _id.toString();
-          return await Comments.find({articleId: _id}).toArray();
+          return await Comments.find({blogId: _id}).toArray();
         },
         author: async ({authorId}) => {
           return await Users.findOne(ObjectId(authorId))
@@ -101,8 +101,8 @@ const init = async () => {
       },
 
       Comment: {
-        article: async ({articleId}) => {
-          return await Articles.findOne(ObjectId(articleId));
+        blog: async ({blogId}) => {
+          return await Blogs.findOne(ObjectId(blogId));
         },
         commenter: async ({commenterId}) => {
           return await Users.findOne(ObjectId(commenterId));
@@ -114,9 +114,9 @@ const init = async () => {
           const res = await Users.insert(args);
           return await Users.findOne({_id: res.insertedIds[0]});
         },
-        postArticle: async (root, args) => {
-          const res = await Articles.insert(args);
-          return await Articles.findOne({_id: res.insertedIds[0]});
+        postBlog: async (root, args) => {
+          const res = await Blogs.insert(args);
+          return await Blogs.findOne({_id: res.insertedIds[0]});
         },
         postComment: async (root, args) => {
           const res = await Comments.insert(args);
@@ -130,7 +130,7 @@ const init = async () => {
       resolvers
     });
 
-    const app = express()
+    const app = express();
     const distPath = path.resolve(__dirname, '../dist');
 
     app.use(cors());

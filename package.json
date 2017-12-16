@@ -20,13 +20,17 @@
     "mongodb": "^2.2.31"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
     "babel-eslint": "^7.2.3",
+    "babel-jest": "^21.2.0",
+    "jest": "^21.2.1",
+    "regenerator-runtime": "^0.11.1",
     "webpack": "^3.5.5"
   },
   "scripts": {
     "start": "babel -d dist/ src/ && node dist/index.js",
     "mongo": "mongod --dbpath ./data/db",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
